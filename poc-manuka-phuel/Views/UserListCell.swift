@@ -12,13 +12,19 @@ struct UserListCell: View {
     
     var body: some View {
         HStack {
-            AsyncImage(url: URL(string: user.imageUrl ?? "https://picsum.photos/id/13/200"))
-                .frame(width: 50, height: 50)
-                .cornerRadius(10)
-            
+            AsyncImage(url: URL(string: user.imageUrl ?? "https://picsum.photos/id/13/200")) { image in
+                image.resizable()
+                    .scaledToFill()
+                    .frame(width: 50, height: 50)
+                    .cornerRadius(10)
+                    .clipped()
+            } placeholder: {
+                ProgressView()
+                    .frame(width: 50, height: 50)
+            }
+                
             VStack(alignment: .leading, spacing: 8) {
                 Text(user.title)
-                
                 Text(user.body)
                     .font(.caption)
             }

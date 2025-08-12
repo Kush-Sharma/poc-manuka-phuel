@@ -12,10 +12,16 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            List(viewModel.users) { user in
-                UserListCell(user: user)
+            ZStack {
+                List(viewModel.users) { user in
+                    UserListCell(user: user)
+                }
+                .accessibilityIdentifier("usersList")
+                
+                if viewModel.isLoading {
+                    Loader()
+                }
             }
-            .accessibilityIdentifier("usersList")
             .navigationTitle(Text("Users"))
             .task {
                 await viewModel.fetchUsers()
@@ -27,6 +33,7 @@ struct ContentView: View {
             } message: { error in
                 Text(error.recoverySuggestion ?? "An unknown error occurred.")
             }
+            
         }
     }
 }
